@@ -1,0 +1,41 @@
+.container {
+    padding        : 10px;
+    border-radius  : 10px;
+    background     : #F2F2F2;
+    border         : 1px solid #DDD;
+    display        : flex;
+    flex-direction : column;
+    gap            : 10px;
+
+    header {
+        display         : flex;
+        justify-content : space-between;
+        align-items     : center;
+
+        .left {
+            display        : flex;
+            flex-direction : row;
+            gap            : 5px;
+            align-items    : center;
+
+            img {
+                width         : 50px;
+                height        : 50px;
+                border-radius : 10px;
+            }
+
+            .info {
+                display         : flex;
+                flex-direction  : column;
+                gap             : 5px;
+                justify-content : center;
+            }
+        }
+    }
+
+    .content {
+        display        : flex;
+        flex-direction : column;
+        gap            : 5px;
+    }
+}
