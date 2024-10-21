@@ -1,15 +1,15 @@
 {
-  "name": "web-components-hello",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "^5.5.3",
-    "vite": "^5.4.8"
-  }
+    "name": "web-components-hello",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite -c vite.config.ts",
+        "build": "tsc && vite build -c vite.config.ts",
+        "preview": "vite preview -c vite.config.ts"
+    },
+    "devDependencies": {
+        "typescript": "^5.5.3",
+        "vite": "^5.4.8"
+    }
 }
