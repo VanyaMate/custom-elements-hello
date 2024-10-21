@@ -1,5 +1,4 @@
 import {
-    Post,
     PostPreview,
 } from '../../../entity/post/PostPreview/ui/PostPreview.ts';
 import {
@@ -8,65 +7,56 @@ import {
 import {
     PostLikeButton,
 } from '../../../feature/post/PostLikeButton/ui/PostLikeButton.ts';
+import { Post } from '@/action/posts/getPosts/getPosts.ts';
+import {
+    getPostsEffect,
+    posts,
+    postsPending,
+} from '@/model/posts/posts.model.ts';
 
-
-customElements.define('web-post-preview', PostPreview);
-customElements.define('web-post-control', PostControl);
-customElements.define('web-post-like-button', PostLikeButton, { extends: 'button' });
-
-
-type JsonPlaceholderPost = {
-    userId: number,
-    id: number,
-    title: string,
-    body: string
-};
 
 class PostsPage extends HTMLElement {
+    private _unsubscribes: Array<() => void> = [];
+
     constructor () {
         super();
-        this._renderLoader();
-        this._getPosts().then(this._renderPosts.bind(this));
     }
 
-    private _renderLoader () {
-        this.innerHTML = 'Loading..';
+    connectedCallback () {
+        this._unsubscribes.push(postsPending.subscribe(this._renderLoader.bind(this)));
+        this._unsubscribes.push(posts.subscribe(this._renderPosts.bind(this)));
+
+        getPostsEffect();
     }
 
-    private _getPosts () {
-        return fetch('https://jsonplaceholder.typicode.com/posts')
-            .then((response) => response.json())
-            .then(this._convertJsonPlaceholderPostToDomain);
+    disconnectedCallback () {
+        this._unsubscribes.forEach((cb) => cb());
+    }
+
+    private _renderLoader (loading: boolean) {
+        if (loading) {
+            this.innerHTML = 'Loading..';
+        }
     }
 
     private _renderPosts (posts: Array<Post>) {
         this.innerHTML = '';
-        posts.forEach((post) => {
-            this.append(
-                new PostPreview(
-                    post,
-                    null,
-                    new PostControl(
-                        new PostLikeButton(post.id, true, 1000),
-                    ),
-                ),
-            );
-        });
-    }
 
-    private _convertJsonPlaceholderPostToDomain (posts: Array<JsonPlaceholderPost>): Array<Post> {
-        return posts.map((post) => {
-            return {
-                id          : post.id.toString(),
-                title       : `[${ post.id }] ${ post.title }`,
-                message     : post.body,
-                author      : {
-                    login : 'Vanya',
-                    avatar: 'https://cms.imgworlds.com/assets/9558de9d-1e49-437e-aa7b-b8bd4d999b00.jpg?key=home-gallery',
-                },
-                creationDate: Date.now(),
-            };
-        });
+        if (posts.length) {
+            posts.forEach((post) => {
+                this.append(
+                    new PostPreview(
+                        post,
+                        null,
+                        new PostControl(
+                            new PostLikeButton(post.id, true, 1000),
+                        ),
+                    ),
+                );
+            });
+        } else {
+            this.innerHTML = 'No posts';
+        }
     }
 }
 

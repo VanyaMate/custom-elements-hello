@@ -14,3 +14,5 @@ export class PostControl extends HTMLElement {
         }
     }
 }
+
+customElements.define('web-post-control', PostControl);

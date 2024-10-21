@@ -1,16 +1,6 @@
 import css from './PostPreview.module.css';
+import { Post } from '@/action/posts/getPosts/getPosts.ts';
 
-
-export type Post = {
-    id: string;
-    title: string;
-    message: string;
-    creationDate: number;
-    author: {
-        login: string;
-        avatar: string;
-    }
-}
 
 export class PostPreview extends HTMLElement {
     constructor (
@@ -52,3 +42,6 @@ export class PostPreview extends HTMLElement {
         }
     }
 }
+
+
+customElements.define('web-post-preview', PostPreview);

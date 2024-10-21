@@ -55,3 +55,5 @@ export class PostLikeButton extends HTMLButtonElement {
         this.innerHTML = `Likes: (${ amount })`;
     }
 }
+
+customElements.define('web-post-like-button', PostLikeButton, { extends: 'button' });
