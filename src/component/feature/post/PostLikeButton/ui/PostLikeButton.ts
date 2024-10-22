@@ -2,10 +2,11 @@ import css from './PostLikeButton.module.css';
 
 // Надо понять как это делать удобнее, но вообще кайф
 
-export class PostLikeButton extends HTMLButtonElement {
+export class PostLikeButton extends HTMLElement {
     constructor (postId: string, liked: boolean, amount: number) {
         super();
         this.className = css.container;
+        this.role      = 'button';
 
         this.setAttribute('liked', liked.toString());
         this.setAttribute('amount', amount.toString());
